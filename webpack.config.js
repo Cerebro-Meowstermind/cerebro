@@ -4,15 +4,18 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 console.log('test');
 
 module.exports = {
+  mode: 'development',
   entry: './client/index.js',
 
   output: {
     path: path.join(__dirname, '/dist'),
     filename: 'bundle.js',
+    publicPath: '/',
   },
 
   plugins: [
     new HTMLWebpackPlugin({
+      filename: 'index.html',
       template: './client/index.html',
     }),
   ],
@@ -47,6 +50,7 @@ module.exports = {
   },
 
   devServer: {
+    historyApiFallback: true,
     proxy: {
       '/': 'http://localhost:3000',
     },
