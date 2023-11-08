@@ -1,16 +1,16 @@
-import React from "react";
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { useState } from "react";
-import LoginPage from "./components/LoginPage.jsx";
-import SignupPage from "./components/SignupPage.jsx";
-import FrontPage from "./components/FrontPage.jsx";
-import CreateSession from "./components/CreateSession.jsx";
-import StudySession from "./components/StudySession.jsx";
-import InputPage from "./components/InputPage.jsx";
-import SessionPage from "./components/SessionPage.jsx";
-import ReviewStudySession from "./components/ReviewStudySession.jsx";
-import CreateFlashCards from "./components/CreateFlashCards.jsx";
-import ReviewFlashCards from "./components/ReviewFlashCards.jsx";
+import { useState } from 'react';
+import LoginPage from './LoginPage.jsx';
+import SignupPage from './SignupPage.jsx';
+import FrontPage from './FrontPage.jsx';
+import CreateSession from './CreateSession.jsx';
+import StudySession from './StudySession.jsx';
+import InputPage from './InputPage.jsx';
+import SessionPage from './SessionPage.jsx';
+import ReviewStudySession from './ReviewStudySession.jsx';
+import CreateFlashCards from './CreateFlashCards.jsx';
+import ReviewFlashCards from './ReviewFlashCards.jsx';
 
 const App = () => {
   return (
@@ -26,21 +26,20 @@ const App = () => {
         <Route path="/reviewflashcards" element={<ReviewFlashCards />} />
       </Routes>
     </div>
-  )
-}
+  );
+};
 
+// return <SignupPage />
+// return <LoginPage />
 
-  // return <SignupPage />
-  // return <LoginPage />
+// const [mode, updateMode] = useState("loginPage");
+// const [title, updateTitle] = useState("");
+// const [topic, updateTopic] = useState("");
 
-  // const [mode, updateMode] = useState("loginPage");
-  // const [title, updateTitle] = useState("");
-  // const [topic, updateTopic] = useState("");
-
-  // const titleChangeHandler = (e) => {
-  //   updateTitle(e.target.value);
-  //   console.log(e.target.value);
-  // };
+// const titleChangeHandler = (e) => {
+//   updateTitle(e.target.value);
+//   console.log(e.target.value);
+// };
 
 //   const topicChangeHandler = (e) => {
 //     updateTopic(e.target.value);

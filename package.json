@@ -4,10 +4,9 @@
   "description": "Personalized learning via autodidactic tutoring powered by AI.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server/server.js",
-    "build": "webpack .",
-    "dev": "NODE_ENV=development nodemon server/server.js & NODE_ENV=development webpack serve"
+    "start": "node server/server.js",
+    "dev": "NODE_ENV=development webpack-dev-server --mode development --open --hot",
+    "build": "NODE_ENV=production webpack --mode production"
   },
   "author": "",
   "license": "ISC",

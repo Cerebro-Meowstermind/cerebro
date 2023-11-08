@@ -1,18 +1,18 @@
-const express = require('express');
-const router = express.Router();
-const { User } = require('./StudentModelv2.js');
+const { User } = require('./Database/StudentModelv2.js');
+const { StudySession } = require('./Database/StudentModelv2.js');
 
-//Login route
-router.post('/login', (req, res) => {
+const controllers = {};
+
+controllers.login = (req, res, next) => {
   const { username, password } = req.body;
-  console.log(req.body);
   User.find({ username: username, password: password })
+    .exec()
     .then(data => {
       console.log(data);
       if (data.length === 0) {
         return res.status(201).json(false);
       }
-      return res.status(201).json(true);
+      return next();
     })
     .catch(err => {
       return res.status(500).json({
@@ -21,10 +21,9 @@ router.post('/login', (req, res) => {
         error: err.message,
       });
     });
-});
+};
 
-//Signup route
-router.post('/signup', async (req, res) => {
+controllers.signup = async (req, res, next) => {
   try {
     const { firstName, lastName, username, email, password, gradeLevel } =
       req.body;
@@ -39,10 +38,7 @@ router.post('/signup', async (req, res) => {
     });
     console.log('Console log req.body:', user);
 
-    res.status(201).json({
-      success: true,
-      message: 'User registered successfully',
-    });
+    return next();
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -50,6 +46,29 @@ router.post('/signup', async (req, res) => {
       error: error.message,
     });
   }
-});
+};
 
-module.exports = router;
+controllers.createSession = async (req, res, next) => {
+  try {
+    const { sessionName, topic, mainPoints, painPoints, notes } = req.body;
+    console.log('Console log req.body:', req.body);
+    const session = await StudySession.create({
+      sessionName,
+      topic,
+      mainPoints,
+      painPoints,
+      notes,
+    });
+    console.log('Console log session', session);
+
+    return next();
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error creating session',
+      error: error.message,
+    });
+  }
+};
+
+module.exports = controllers;

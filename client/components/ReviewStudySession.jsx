@@ -1,8 +1,8 @@
-import React from "react";
-import HeaderMenu from "./HeaderMenu.jsx";
-import FooterMenu from "./FooterMenu.jsx";
+import React from 'react';
+import HeaderMenu from './HeaderMenu.jsx';
+import FooterMenu from './FooterMenu.jsx';
 
-function ReviewStudySession({username}) {
+function ReviewStudySession({ username }) {
   return (
     <div className="reviewStudySession">
       <HeaderMenu username={username} />
@@ -11,7 +11,7 @@ function ReviewStudySession({username}) {
       </section>
       <FooterMenu />
     </div>
-  )
+  );
 }
 
 export default ReviewStudySession;
