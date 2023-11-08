@@ -21,7 +21,7 @@ mongoose
   .then(() => {
     console.log('Connected to the database!');
   })
-  .catch(err => {
+  .catch((err) => {
     console.error('MongoDB connection error:', err);
   });
 
@@ -32,6 +32,16 @@ db.once('open', function () {
 });
 
 const APIrequests = require('./OpenAI/APIrequests');
+
+
+
+const DIST_DIR = path.join(__dirname, '../dist'); // Adjust this path to where your dist folder actually is.
+
+app.use(express.static(DIST_DIR));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(DIST_DIR, 'index.html'));
+});
 
 // app.use(express.static(path.join(__dirname, '../dist')));
 // app.use(express.static(path.join(__dirname, '../public')));
