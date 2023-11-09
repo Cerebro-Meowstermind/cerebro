@@ -1,10 +1,6 @@
 const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser');
-const userController = require('./Database/UserController.js');
-const sessionController = require('./Database/SessionController.js');
 const mongoose = require('mongoose');
-
 const router = require('./routes.js');
 
 const app = express();
@@ -19,70 +15,21 @@ const atlasUri =
 mongoose
   .connect(atlasUri)
   .then(() => {
-    console.log('Connected to the database!');
+    console.log('Connected to the Database!');
   })
-  .catch((err) => {
+  .catch(err => {
     console.error('MongoDB connection error:', err);
   });
-
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', function () {
-  console.log('Connected to the database');
-});
-
-const APIrequests = require('./OpenAI/APIrequests');
-
-
 
 const DIST_DIR = path.join(__dirname, '../dist'); // Adjust this path to where your dist folder actually is.
 
 app.use(express.static(DIST_DIR));
 
+app.use(router);
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(DIST_DIR, 'index.html'));
 });
-
-// app.use(express.static(path.join(__dirname, '../dist')));
-// app.use(express.static(path.join(__dirname, '../public')));
-// app.use(express.static(path.join(__dirname, '../src/images')));
-
-// app.get('/', (req, res) => {
-//   //console.log testing:
-//   console.log('Received request from root');
-
-//   res.status(200).sendFile(path.join(__dirname, '../public/index.html'));
-//   //console.log testing:
-//   console.log('Response sent back to root');
-// });
-
-app.use('/api', APIrequests);
-
-app.use('/user', userController);
-
-app.use('/session', sessionController);
-
-// app.use((err, req, res, next) => {
-//   console.error('Error:', err.message);
-//   console.error('Stack:', err.stack);
-//   console.error('Path:', req.path);
-//   console.error('Method:', req.method);
-//   //console.log testing:
-//   if (res.headersSent) {
-//     return next(err);
-//   }
-
-//   res.status(err.statusCode || 500).json({
-//     success: false,
-//     message: 'Internal Server Error',
-//     error: {
-//       message: err.message,
-//       stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
-//     },
-//   });
-// });
-
-app.use(router);
 
 app.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}`);

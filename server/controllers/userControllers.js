@@ -1,14 +1,16 @@
-const { User } = require('./Database/StudentModelv2.js');
-const { StudySession } = require('./Database/StudentModelv2.js');
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
-const controllers = {};
+const { User } = require('../database/StudentModelv2.js');
+const { StudySession } = require('../database/StudentModelv2.js');
 
-controllers.login = (req, res, next) => {
+const userControllers = {};
+
+userControllers.login = (req, res, next) => {
   const { username, password } = req.body;
   User.find({ username: username, password: password })
     .exec()
     .then(data => {
-      console.log(data);
       if (data.length === 0) {
         return res.status(201).json(false);
       }
@@ -23,11 +25,11 @@ controllers.login = (req, res, next) => {
     });
 };
 
-controllers.signup = async (req, res, next) => {
+userControllers.signup = async (req, res, next) => {
   try {
     const { firstName, lastName, username, email, password, gradeLevel } =
       req.body;
-    console.log('Console log req.body:', req.body);
+
     const user = await User.create({
       firstName,
       lastName,
@@ -36,7 +38,6 @@ controllers.signup = async (req, res, next) => {
       password,
       gradeLevel,
     });
-    console.log('Console log req.body:', user);
 
     return next();
   } catch (error) {
@@ -48,10 +49,10 @@ controllers.signup = async (req, res, next) => {
   }
 };
 
-controllers.createSession = async (req, res, next) => {
+userControllers.createSession = async (req, res, next) => {
   try {
     const { sessionName, topic, mainPoints, painPoints, notes } = req.body;
-    console.log('Console log req.body:', req.body);
+
     const session = await StudySession.create({
       sessionName,
       topic,
@@ -59,7 +60,6 @@ controllers.createSession = async (req, res, next) => {
       painPoints,
       notes,
     });
-    console.log('Console log session', session);
 
     return next();
   } catch (error) {
@@ -71,4 +71,25 @@ controllers.createSession = async (req, res, next) => {
   }
 };
 
-module.exports = controllers;
+userControllers.getSessions = async (req, res, next) => {
+  console.log('WORKING');
+
+  try {
+    const { userId } = req.params;
+
+    const sessions = await StudySession.find({ userId: userId });
+
+    if (!sessions || sessions.length === 0) {
+      return res.status(404).send('Sessions not found');
+    }
+
+    res.locals.studySessions = sessions;
+
+    return next();
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send('Internal Service Error');
+  }
+};
+
+module.exports = userControllers;
