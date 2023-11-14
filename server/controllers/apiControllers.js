@@ -39,7 +39,18 @@ apiControllers.askQuestion = async (req, res, next) => {
 };
 
 apiControllers.getFlashcards = async (req, res, next) => {
-  // flashcards
+  try {
+    const { notes } = req.body;
+    const flashcards = await createFlashcards(notes);
+    res.locals.flashcards = flashcards;
+    next();
+  } catch (error) {
+    return next({
+      log: `An error occurred in apiControllers.getFlashcards: ${err}`,
+      status: 500,
+      message: 'Error: An error Occurred',
+    });
+  }
 };
 
 module.exports = apiControllers;

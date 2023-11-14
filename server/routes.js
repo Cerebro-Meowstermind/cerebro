@@ -16,7 +16,9 @@ router.post('/signup', userControllers.signup, (req, res) => {
 });
 
 router.post('/create', userControllers.createSession, (req, res) => {
+  // Assuming you have the session object from `userControllers.createSession`
   res.status(201).json({
+    success: true,
     message: 'Created Mongo Session',
   });
 });
@@ -26,7 +28,11 @@ router.post('/ask-question', apiControllers.askQuestion, (req, res) => {
 });
 
 router.post('/flashcards', apiControllers.getFlashcards, (req, res) => {
-  res.status(200).json(res.locals.askQuestion);
+  res.status(200).json({
+    success: true,
+    message: 'Created Mongo Session',
+    data: res.locals.flashcards,
+  });
 });
 
 router.get('/getSessions/:_id', userControllers.getSessions, (req, res) => {

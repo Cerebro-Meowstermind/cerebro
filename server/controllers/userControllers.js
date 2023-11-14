@@ -63,6 +63,7 @@ userControllers.createSession = async (req, res, next) => {
 
     return next();
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       success: false,
       message: 'Error creating session',

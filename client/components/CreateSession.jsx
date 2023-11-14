@@ -12,6 +12,7 @@ function CreateSession({ username }) {
   const [mainPoints, setMainPoints] = useState('');
   const [painPoints, setPainPoints] = useState('');
   const [notes, setNotes] = useState('');
+  const [flashcards, setFlashcards] = useState([]);
 
   function submitSession(e) {
     e.preventDefault();
@@ -24,7 +25,7 @@ function CreateSession({ username }) {
       notes,
     };
 
-    fetch('/create-study-session', {
+    fetch('/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,6 +43,42 @@ function CreateSession({ username }) {
       .catch(err => {
         console.error('Error creating session');
         //throw new Error(`HTTP error! status: ${response.status}`);
+      });
+  }
+
+  function submitNotes(e) {
+    e.preventDefault();
+
+    const sessionData = {
+      sessionName,
+      topic,
+      mainPoints,
+      painPoints,
+      notes,
+    };
+
+    navigate('/studysession', { state: sessionData });
+
+    fetch('/flashcards', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ notes: sessionData.notes }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        //navigate('/studysession', { state: notesData });
+        console.log('DATA', data.data);
+        setFlashcards(data.data);
+        if (data.success) {
+          // navigate('/studysession', { state: sessionData });
+        } else {
+          console.log('ERROR', data.message);
+        }
+      })
+      .catch(err => {
+        console.log('ERROR CREATING SESSION');
       });
   }
 
